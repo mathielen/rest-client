@@ -2,7 +2,7 @@
 namespace Phpforce\RestClient;
 
 use Phpforce\SoapClient\ClientInterface;
-use GuzzleHttp\Client as GuzzleClient;
+use Guzzle\Service\Client as GuzzleClient;
 use Phpforce\SoapClient\Result\LoginResult;
 
 /**
@@ -15,16 +15,16 @@ class Client
      *
      * @var ClientInterface
      */
-    protected $soapClient;
+    protected $client;
 
     /**
      * Constructor
      *
-     * @param ClientInterface $soapClient
+     * @param ClientInterface $client
      */
-    public function __construct(ClientInterface $soapClient)
+    public function __construct(ClientInterface $client)
     {
-        $this->soapClient = $soapClient;
+        $this->client = $client;
     }
 
     /**
@@ -35,7 +35,7 @@ class Client
      *
      * @return array The JSON response as an array
      */
-    public function call($method, $arguments = null)
+    public function call($method, array $arguments = array())
     {
         $request = $this->getClient()->get($method);
         $request->setHeader('Authorization', 'Bearer ' . $this->getSessionId());
@@ -87,7 +87,7 @@ class Client
      */
     protected function getLoginResult()
     {
-        return $this->soapClient->getLoginResult();
+        return $this->client->getLoginResult();
     }
 
     /**
